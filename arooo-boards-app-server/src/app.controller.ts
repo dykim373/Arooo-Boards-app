@@ -1,12 +1,31 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Board } from './board.entity';
+import { CreateBoardDto } from './create-board.dto';
 
-@Controller()
+@Controller("/library/content")
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+    constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+    @Get()
+    getAllContents(): Promise<string> {
+        return this.appService.getAllContents();
+    }
+
+    @Get("/:contentId")
+    getContent(): Promise<string> {
+        return this.appService.getContent();
+    }
+
+    @Post()
+    createContent(
+        @Body() createBoardDto: CreateBoardDto
+    ): Promise<Board> {
+        return this.appService.createContent(createBoardDto);
+    }
+
+    @Post("/:contentId/like")
+    patchNumberOfLikes(): Promise<string> {
+        return this.appService.patchNumberOfLikes();
+    }
 }
