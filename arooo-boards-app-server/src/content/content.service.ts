@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Content } from './content.entity';
+import { Content, QueryDto } from './type.config/custom-type';
 import { contentsRawData } from './data/contents-raw-data';
 import { ShownData } from './shown-data.entity';
 
@@ -7,15 +7,30 @@ import { ShownData } from './shown-data.entity';
 export class ContentService {
     private contentRepository: Content[] = contentsRawData;
 
-    getAllContents(query) {
-        const skip = parseInt(query.skip);
-        const limit = parseInt(query.limit);
+    getAllContents(query: QueryDto) {
+        /*
+            문자 입력 => NaN
+            음수 입력 => NaN
+            양의 실수 => 내림
+        */
+        const makeItNatural = (Num: number) => {
+            if (Number.isNaN(Num)){
+                return NaN;
+            } else if (Num < 0) {
+                return NaN;
+            } else {
+                return Math.floor(Num);
+            }
+        }
+        const skip: number = makeItNatural(Number(query.skip));
+        const limit: number = makeItNatural(Number(query.limit));
 
-        if( !Number.isNaN(skip) && !Number.isNaN(limit) ) {
+        if ( !Number.isNaN(skip) && !Number.isNaN(limit) ) {
             const cuttingData: Content[] = this.contentRepository.slice(skip, skip + limit);
             const shownData: ShownData[] = cuttingData.map( ({content, ...rest}) => rest );
             return shownData;
         } else {
+            //잘못 입력(음수, 문자) 시 전체 배열 반환
             const shownData: ShownData[] = this.contentRepository.map( ({content, ...rest}) => rest );
             return shownData;
         }

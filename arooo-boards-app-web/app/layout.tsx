@@ -14,8 +14,13 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en">
-            <body className={inter.className}>{children}</body>
+        <html lang="ko">
+            <head>
+                <link href='/Arooo-boards-icon.ico' rel='short icon' type='image/x-icon'/>
+            </head>
+            <body className={inter.className}>
+                {children}
+            </body>
         </html>
     )
 }

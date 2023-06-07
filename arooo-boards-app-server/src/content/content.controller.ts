@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { Content } from './content.entity';
+import { Content, QueryDto } from './type.config/custom-type';
 import { ContentService } from './content.service';
 import { ShownData } from './shown-data.entity';
 
@@ -9,7 +9,7 @@ export class ContentController {
 
     @Get()
     getAllContents(
-        @Query() query
+        @Query() query: QueryDto
     ): ShownData[] {
         return this.contentService.getAllContents(query);
     }
