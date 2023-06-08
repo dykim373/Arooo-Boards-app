@@ -1,73 +1,33 @@
 "use client"
-import { Content } from "@/app/type.config/custom-type";
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { useRouter } from "next/navigation";
+import ShowContent from "./show-content";
+import ContentsLoading from "@/app/contents.loading";
 
 export default function Page({params}: {params: DetailPageParam}) {
-    
-    /* 상세 콘텐츠 불러오기 */
-    const contentsURL: string = "http://localhost:3030/library/content";
-    const [details, setDetails] = useState<Content>(defaultContent);
-    useEffect(() => {getDetails()}, []);
 
-    const getDetails = async () => {
-        const detailsURL: string = contentsURL + `/${params.id}`;
-        try {
-            const response = await fetch(detailsURL, {
-                method: "GET",
-                headers: {
-                'Content-Type': 'application/json',
-                },
-            });
-            const data: Content = await response.json();
-            setDetails(data);
-        } catch {
-            console.error("Error");
-        }
-    }
-    /* <END> 상세 콘텐츠 불러오기 */
-
-
-    /* 좋아요 버튼 */
-    const addLikesById = async (id: string) => {
-        const addLikesURL: string = contentsURL + `/${id}/like`;
-        try {
-            await fetch(addLikesURL, {
-                method: "POST",
-                headers: {
-                'Content-Type': 'application/json',
-                },
-            });
-            getDetails();
-        } catch {
-            console.error('Error');
-        }
-    }
-    /* <END> 좋아요 버튼 */
-
+    const [loading, setLoading] = useState<boolean>(true);
+    const router = useRouter();
 
     return (
-        <div>
-            <div
-                id="detailsBox"
-                className=""
-                >
-                    <div
-                        id="titleBox"
-                        className="flex"
-                    >
-                        <p>{details.title}</p>
-                        <button
-                            onClick={() => {addLikesById(details.id)}}
-                            className="border border-black px-[3px]"
-                            >❤︎ <span className="text-sm">{details.likes}</span>
-                        </button>
-                    </div>
-                    <div
-                        id="contentBox"
-                        className="whitespace-pre"
-                    >
-                        {details.content}
-                    </div>
+        <div id="detailsBox">
+            <div className="border-b-[3px] border-gray-200 flex justify-end">
+                <button
+                    onClick={() => {router.push('/')}}
+                    className="bg-black rounded-md text-sm text-center text-white font-bold
+                    py-[3px] w-[60px] mr-[5px] mb-[3px]"
+                >Back</button>
+            </div>
+
+
+            <div className={loading?'hidden':''}>
+                <ShowContent
+                    id = {params.id}
+                    setLoading = {setLoading}
+                />
+            </div>
+            <div className={loading?'':'hidden'}>
+                <ContentsLoading/>
             </div>
         </div>
     )
@@ -75,11 +35,4 @@ export default function Page({params}: {params: DetailPageParam}) {
 
 interface DetailPageParam {
     id: string;
-}
-
-const defaultContent: Content = {
-    id: "",
-    title: "",
-    likes: 0,
-    content: ""
 }

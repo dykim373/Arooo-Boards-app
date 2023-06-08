@@ -1,4 +1,5 @@
 export default function Footer() {
+    
     return (
         <footer className="border-t-[3px] border-gray-200 px-[20px] py-[10px]">
             <p>여성에게 필요한 성지식, <span className="font-bold">자기만의방</span></p>

@@ -8,7 +8,7 @@ export default function ContentsBox() {
 
     /* Contents 받아오기 */
     const contentsURL: string = "http://localhost:3030/library/content";
-    const loadingDelay: number = 300;
+    const loadingDelay: number = 15;
     const [contents, setContents] = useState<ShownContent[]>([]);
     const [skip, setSkip] = useState<string>('');
     const [limit, setLimit] = useState<string>('');
@@ -94,13 +94,11 @@ export default function ContentsBox() {
 const manageSkipLimit = (getSkip: string, getLimit: string) => {
     let numSkip: number = Number(getSkip);
     let numLimit: number = Number(getLimit);
-
     if (Number.isNaN(numSkip) || numSkip < 0){
         numSkip = 0;
     } else {
         numSkip = Math.floor(numSkip);
     }
-
     if (Number.isNaN(numLimit) || numLimit <= 0){
         numLimit = 9999;
     } else {

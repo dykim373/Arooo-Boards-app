@@ -1,6 +1,7 @@
 export default function Header() {
+    
     return (
-        <header className="flex mt-[5px] mb-[15px]">
+        <header className="flex mt-[5px]">
             <a href="/" className="flex">
                 <img src="/Arooo-boards-png.png" className="h-[100px]"/>
                 <div className="flex flex-col justify-end">
