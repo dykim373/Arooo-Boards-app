@@ -1,5 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
+import Header from './header'
+import Footer from './footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,7 +21,14 @@ export default function RootLayout({
                 <link href='/Arooo-boards-icon.ico' rel='short icon' type='image/x-icon'/>
             </head>
             <body className={inter.className}>
-                {children}
+                <div
+                    id='wrap'
+                    className='w-[600px] mx-auto'
+                >
+                    <Header/>
+                    {children}
+                    <Footer/>
+                </div>
             </body>
         </html>
     )

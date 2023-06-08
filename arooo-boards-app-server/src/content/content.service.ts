@@ -9,8 +9,7 @@ export class ContentService {
 
     getAllContents(query: QueryDto) {
         /*
-            문자 입력 => NaN
-            음수 입력 => NaN
+            문자, 음수 => NaN
             양의 실수 => 내림
         */
         const makeItNatural = (Num: number) => {
@@ -25,7 +24,11 @@ export class ContentService {
         const skip: number = makeItNatural(Number(query.skip));
         const limit: number = makeItNatural(Number(query.limit));
 
-        if ( !Number.isNaN(skip) && !Number.isNaN(limit) ) {
+        if( skip === 0 && limit === 0 ) {
+            //초기값(skip, limit = 0) 전체 배열 반환
+            const shownData: ShownData[] = this.contentRepository.map( ({content, ...rest}) => rest );
+            return shownData;
+        } else if ( !Number.isNaN(skip) && !Number.isNaN(limit) ) {
             const cuttingData: Content[] = this.contentRepository.slice(skip, skip + limit);
             const shownData: ShownData[] = cuttingData.map( ({content, ...rest}) => rest );
             return shownData;
